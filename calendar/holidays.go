@@ -1,4 +1,4 @@
-package main
+package calendar
 
 import (
 	"sort"
@@ -27,14 +27,14 @@ var listHolidays = map[string][]Holiday{
 	},
 }
 
-func getHolidays(year int, locale string) []time.Time {
+func GetHolidays(year int, locale string) []time.Time {
 	yearHolidays := []time.Time{
 		GetGoodFriday(year),
 		GetMonday(year),
 	}
 
 	for _, holiday := range listHolidays[locale] {
-		date := getDate(year, holiday.Month, holiday.Day)
+		date := GetDate(year, holiday.Month, holiday.Day)
 		yearHolidays = append(yearHolidays, date)
 	}
 

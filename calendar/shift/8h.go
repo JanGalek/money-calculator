@@ -1,0 +1,5 @@
+package shift
+
+func GetWorkday() {
+
+}
