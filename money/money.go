@@ -1,6 +1,7 @@
 package money
 
 import (
+	"math"
 	"money-calculator/calendar/shift"
 	"time"
 )
@@ -19,4 +20,8 @@ func Calc(hourRate float32, hours float32, shift shift.Shift, time time.Time) fl
 
 func BasicCalc(hourRate float32, hours float32) float32 {
 	return hourRate * hours
+}
+
+func RoundHundreds(number float64) float64 {
+	return math.Round(number/100) * 100
 }
