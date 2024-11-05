@@ -41,7 +41,7 @@ func calculate(year int) (time.Time, error) {
 	case s2 > 25:
 		easterSunday = GetDate(year, 4, s2-7)
 	default:
-		return time.Time{}, fmt.Errorf("Error calculating Easter Sunday for year %d", year)
+		return time.Time{}, fmt.Errorf("Error calculating Easter Sunday for Year %d", year)
 	}
 
 	return easterSunday, nil

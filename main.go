@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"money-calculator/calendar"
 	"money-calculator/calendar/shift"
+	"money-calculator/windowApp"
 	"time"
 )
 
@@ -19,4 +20,6 @@ func main() {
 	for key, holiday := range hols {
 		fmt.Println(key, ":", year, ":", holiday.Format("2006-01-02"))
 	}
+
+	windowApp.GetApp()
 }

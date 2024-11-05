@@ -16,7 +16,7 @@ type Shift struct {
 func ShiftForMonth_12h2m2n4f(firstMorning time.Time, year int, month int) []time.Time {
 	days := []time.Time{}
 	/*
-		for k, v := range ListDaysInMonth(getDate(year, month, 1)) {
+		for k, v := range ListDaysInMonth(getDate(Year, Month, 1)) {
 			println()
 		}*/
 	return days
