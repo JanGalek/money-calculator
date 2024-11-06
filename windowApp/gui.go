@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
-	xwidget "fyne.io/x/fyne/widget"
 	"math"
 	"money-calculator/calendar/shift"
 	"money-calculator/money"
@@ -16,27 +14,17 @@ import (
 	"time"
 )
 
-type date struct {
-	instruction *widget.Label
-	dateChosen  *widget.Label
-	dateTime    time.Time
-}
-
-func (d *date) onSelected(t time.Time) {
-	// use time object to set text on label with given format
-	d.instruction.SetText("Date Selected:")
-	d.dateChosen.SetText(t.Format("Mon 02 Jan 2006"))
-	d.dateTime = t
-	getPreferences().SetString("firstMorning", d.dateTime.String())
-}
-
-func getTimeFromString(value string) (time.Time, error) {
+func GetTimeFromString(value string) (time.Time, error) {
 	return time.Parse("2006-01-02 15:04:05 -0700 MST", value)
 }
 
 func makeGUI(parentWindow fyne.Window) *fyne.Container {
 	toolbar := widget.NewToolbar(
 		widget.NewToolbarAction(theme.HomeIcon(), func() {}),
+		widget.NewToolbarAction(theme.SettingsIcon(), func() {
+			set := GetSettingWindow()
+			set.Show()
+		}),
 	)
 
 	result := widget.NewLabel("0")
@@ -45,28 +33,14 @@ func makeGUI(parentWindow fyne.Window) *fyne.Container {
 	result4 := widget.NewLabel("0")
 	result5 := widget.NewLabel("0")
 
-	entry := widget.NewEntry()
-	hodinovka := getPreferences().Float("hodinovka")
-
-	entry.Text = fmt.Sprintf("%.2f", hodinovka)
-	entry.Refresh()
-
-	firstMorning := getPreferences().StringWithFallback("firstMorning", "")
+	firstMorning := GetFirstMorning()
 
 	i := widget.NewLabel("Please Choose a Date")
 	i.Alignment = fyne.TextAlignCenter
 	l := widget.NewLabel(firstMorning)
 	l.Alignment = fyne.TextAlignCenter
-	d := &date{instruction: i, dateChosen: l}
-	startingDate := time.Now()
 
-	if firstMorning != "" {
-		startingDate, _ = getTimeFromString(firstMorning)
-		d.onSelected(startingDate)
-	}
-
-	calendar := xwidget.NewCalendar(startingDate, d.onSelected)
-	c := container.NewVBox(i, l, calendar)
+	startingDate := GetFirstMorningDate()
 
 	year := int64(startingDate.Year())
 	years := widget.NewSelect([]string{"Actual", "2023", "2024", "2025"}, func(value string) {
@@ -90,24 +64,16 @@ func makeGUI(parentWindow fyne.Window) *fyne.Container {
 	years.SetSelectedIndex(0)
 
 	form := widget.NewForm(
-		widget.NewFormItem("Prvni ranni smena", c),
 		widget.NewFormItem("Rok", years),
 		widget.NewFormItem("Mesic", months),
-		widget.NewFormItem("Hodinovka", entry),
 	)
 
 	form.OnSubmit = func() {
-		hodinovka, err1 := strconv.ParseFloat(entry.Text, 64)
-		getPreferences().SetFloat("hodinovka", hodinovka)
+		hodinovka := GetHodinovka()
 
-		workshift := shift.Get12HoursWorkShift(int(month), int(year), d.dateTime)
+		workshift := shift.Get12HoursWorkShift(int(month), int(year), startingDate)
 
 		hodiny := workshift.Hours
-
-		if err1 != nil {
-			dialog.NewInformation("Error", "Prosím, zadejte platná čísla", parentWindow).Show()
-			return
-		}
 
 		calc := hodinovka * hodiny
 		nights := hodinovka * workshift.NighHours * 0.1
