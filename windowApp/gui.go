@@ -79,7 +79,7 @@ func makeGUI(parentWindow fyne.Window) *fyne.Container {
 		result5.Text = fmt.Sprintf("Soc: %.2f, Zdrav: %.2f, Dan: %.2f", income.Soc, income.Zdrav, income.Tax)
 		result5.Refresh()
 
-		result2.Text = fmt.Sprintf("Noční: %.2f, Víkendy: %.2f, Svátky: %.2f", income.Nights, income.Weekends, income.Holidays)
+		result2.Text = fmt.Sprintf("Noční: %.2f, Odpolední: %.2f, Víkendy: %.2f, Svátky: %.2f", income.Nights, income.Afternoons, income.Weekends, income.Holidays)
 		result2.Refresh()
 		result3.Text = fmt.Sprintf("Průměr: %.2f, Průměr hodinovka: %.2f", income.Avarage, income.AvaragePerHour)
 		result3.Refresh()
