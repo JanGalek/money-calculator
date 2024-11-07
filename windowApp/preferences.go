@@ -40,3 +40,25 @@ func SetHodinovka(hodinovka float64) {
 func GetHodinovka() float64 {
 	return GetPreferences().FloatWithFallback("hodinovka", 0.0)
 }
+
+func SetCoeficientSoc(value float64) {
+
+}
+
+func GetCoeficientSoc() {
+
+}
+
+func SetCoeficientZdrav(value float64) {
+
+}
+func GetCoeficientZdrav() {
+
+}
+
+func SetCoeficientTax(value float64) {
+
+}
+func GetCoeficientTax() {
+
+}
