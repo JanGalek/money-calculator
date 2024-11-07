@@ -7,7 +7,6 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
-	"math"
 	"money-calculator/calendar/shift"
 	"money-calculator/money"
 	"strconv"
@@ -73,37 +72,18 @@ func makeGUI(parentWindow fyne.Window) *fyne.Container {
 
 		workshift := shift.Get12HoursWorkShift(int(month), int(year), startingDate)
 
-		hodiny := workshift.Hours
+		income := money.Calc(workshift, hodinovka)
 
-		calc := hodinovka * hodiny
-		nights := hodinovka * workshift.NighHours * 0.1
-		weekends := hodinovka * workshift.WeekendHours * 0.25
-		holidays := hodinovka * workshift.HolidayHours
-
-		zaklad := hodinovka * hodiny
-
-		calc += nights + weekends + holidays
-
-		danZaklad := money.RoundHundreds(calc)
-
-		socialni := math.Round(danZaklad * 0.071)
-		zdravotni := math.Round(danZaklad * 0.045)
-		danPrijem := math.Round(danZaklad*0.15) - 2570
-
-		cista := danZaklad - socialni
-		cista -= zdravotni
-		cista -= danPrijem
-
-		result.Text = fmt.Sprintf("Hoding: %.2f, Zaklad: %.2f , Hrubá: %.2f , Čistá: %.2f", hodiny, zaklad, calc, cista)
+		result.Text = fmt.Sprintf("Hodin: %.2f, Basic: %.2f , Hrubá: %.2f , Čistá: %.2f", income.Hours, income.Basic, income.GrossSalary, income.Money)
 		result.Refresh()
-		result5.Text = fmt.Sprintf("Soc: %.2f, Zdrav: %.2f, Dan: %.2f", socialni, zdravotni, danPrijem)
+		result5.Text = fmt.Sprintf("Soc: %.2f, Zdrav: %.2f, Dan: %.2f", income.Soc, income.Zdrav, income.Tax)
 		result5.Refresh()
 
-		result2.Text = fmt.Sprintf("Noční: %.2f", nights)
+		result2.Text = fmt.Sprintf("Noční: %.2f, Víkendy: %.2f, Svátky: %.2f", income.Nights, income.Weekends, income.Holidays)
 		result2.Refresh()
-		result3.Text = fmt.Sprintf("Víkendy: %.2f", weekends)
+		result3.Text = fmt.Sprintf("Průměr: %.2f, Průměr hodinovka: %.2f", income.Avarage, income.AvaragePerHour)
 		result3.Refresh()
-		result4.Text = fmt.Sprintf("Svátky: %.2f", holidays)
+		result4.Text = fmt.Sprintf("Hodinovka: %.2f", hodinovka)
 		result4.Refresh()
 
 	}

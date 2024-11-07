@@ -29,9 +29,9 @@ func (d *date) onSelected(t time.Time) {
 func getContent(parentWindow fyne.Window) *fyne.Container {
 
 	entry := widget.NewEntry()
-	hodinovka := GetHodinovka()
+	PayPerHour := GetHodinovka()
 
-	entry.Text = fmt.Sprintf("%.2f", hodinovka)
+	entry.Text = fmt.Sprintf("%.2f", PayPerHour)
 	entry.Refresh()
 
 	firstMorning := GetFirstMorning()
@@ -57,8 +57,8 @@ func getContent(parentWindow fyne.Window) *fyne.Container {
 	)
 
 	form.OnSubmit = func() {
-		hodinovka, err1 := strconv.ParseFloat(entry.Text, 64)
-		SetHodinovka(hodinovka)
+		PayPerHour, err1 := strconv.ParseFloat(entry.Text, 64)
+		SetHodinovka(PayPerHour)
 
 		if err1 != nil {
 			dialog.NewInformation("Error", "Prosím, zadejte platná čísla", parentWindow).Show()
