@@ -1,0 +1,8 @@
+Website = "https://money-calculator.jangalek.cz"
+
+[Details]
+  Icon = "Icon.png"
+  Name = "Money calculator"
+  ID = "cz.jangalek.money-calculator"
+  Version = "0.1.0"
+  Build = 5

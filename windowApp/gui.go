@@ -31,6 +31,7 @@ func makeGUI(parentWindow fyne.Window) *fyne.Container {
 	result3 := widget.NewLabel("0")
 	result4 := widget.NewLabel("0")
 	result5 := widget.NewLabel("0")
+	//log := widget.NewTextGridFromString("")
 
 	firstMorning := GetFirstMorning()
 
@@ -73,7 +74,15 @@ func makeGUI(parentWindow fyne.Window) *fyne.Container {
 		workshift := shift.Get12HoursWorkShift(int(month), int(year), startingDate)
 
 		income := money.Calc(workshift, hodinovka)
+		/*
+			logText := ""
+			for di, dt := range workshift.DayTypes {
+				logText = fmt.Sprintf("%s\r\n %d: %d", logText, di, dt)
+			}
+			log.SetText(logText)
+			log.Refresh()
 
+		*/
 		result.Text = fmt.Sprintf("Hodin: %.2f, Basic: %.2f , Hrubá: %.2f , Čistá: %.2f", income.Hours, income.Basic, income.GrossSalary, income.Money)
 		result.Refresh()
 		result5.Text = fmt.Sprintf("Soc: %.2f, Zdrav: %.2f, Dan: %.2f", income.Soc, income.Zdrav, income.Tax)
@@ -83,7 +92,7 @@ func makeGUI(parentWindow fyne.Window) *fyne.Container {
 		result2.Refresh()
 		result3.Text = fmt.Sprintf("Průměr: %.2f, Průměr hodinovka: %.2f", income.Avarage, income.AvaragePerHour)
 		result3.Refresh()
-		result4.Text = fmt.Sprintf("Hodinovka: %.2f", hodinovka)
+		result4.Text = fmt.Sprintf("Hodinovka: %.2f, Dnu: %d", hodinovka, workshift.DaysInMonth)
 		result4.Refresh()
 
 	}
@@ -96,6 +105,17 @@ func makeGUI(parentWindow fyne.Window) *fyne.Container {
 	centered2 := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), result2, layout.NewSpacer())
 	centered3 := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), result3, layout.NewSpacer())
 	centered4 := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), result4, layout.NewSpacer())
+	//centered6 := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), log, layout.NewSpacer())
 
-	return container.New(layout.NewVBoxLayout(), cTop, content, centered, centered5, centered2, centered3, centered4)
+	return container.New(
+		layout.NewVBoxLayout(),
+		cTop,
+		content,
+		centered,
+		centered5,
+		centered2,
+		centered3,
+		centered4,
+		//centered6,
+	)
 }
